@@ -1,0 +1,93 @@
+.mainContainer {
+    max-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem; 
+    overflow-y:scroll;
+    box-sizing: border-box;
+}
+.sectionContainer{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.titleDiv{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.title{
+    color: #EF233C;
+    margin-bottom: 2rem;
+}
+
+.titleContainer{
+    margin-bottom: 1rem;
+}
+
+.description{
+    display: flex;
+    flex-direction: column;
+}
+
+.options{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-left: 3rem;
+}
+
+.aeronaveContainer{
+    display: flex;
+    justify-content: center;
+    border: 1px solid white;
+    padding: 2rem;
+    min-width: 40%;
+}
+
+
+.mainContainer h3,.mainContainer p {
+    color: white;
+    margin: 0;
+}
+
+.mainContainer h3{
+    font-size: 1rem;
+}
+
+
+.imgFuncionario{
+    width: 100px;
+    border: solid 1px white ;
+}
+
+.label{
+    color: white;
+}
+
+.titleContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.statusAzul{
+    background-color: rgb(0, 2, 117);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.statusVerde{
+    background-color: rgb(0, 102, 9);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.statusVermelho{
+    background-color: rgb(119, 0, 0);
+    border-radius: 5px;
+    padding: 5px;
+}

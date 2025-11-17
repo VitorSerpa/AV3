@@ -1,0 +1,61 @@
+.mainContainer {
+    max-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem; 
+    overflow-y:scroll;
+    box-sizing: border-box;
+}
+.sectionContainer{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.titleDiv{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.title{
+    color: #EF233C;
+    margin-bottom: 2rem;
+}
+
+.description{
+    display: flex;
+    flex-direction: column;
+}
+
+.options{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-left: 3rem;
+}
+
+.aeronaveContainer{
+    display: flex;
+    justify-content: center;
+    border: 1px solid white;
+    padding: 2rem;
+    min-width: 40%;
+}
+
+
+.mainContainer h3,.mainContainer p {
+    color: white;
+    margin: 0;
+}
+
+.mainContainer h3{
+    font-size: 1rem;
+}
+
+
+.imgAeronave{
+    width: 220px;
+    border: solid 1px white;
+}

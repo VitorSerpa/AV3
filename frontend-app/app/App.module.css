@@ -1,0 +1,61 @@
+.mainSection{
+    display: flex;    
+}
+
+.asideTitle{
+    background-color: #2B2D42;
+    color: #EF233C;
+    height: 100vh;
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.asideTitle h2{
+    margin-bottom: 5rem;
+}
+
+.loginSection{
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginDiv{
+    background-color: #8D99AE;
+    padding: 5rem 5rem;
+    padding-top: 3rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loginDiv h4{
+    justify-self: start;
+    background-color: #2B2D42;
+    color: #EF233C;
+    padding: 0.7rem 5rem;
+    border-radius: 10px;
+    margin-bottom: 3rem;
+}
+
+.inputDiv{
+    display: flex;
+    flex-direction: column;
+}
+
+.inputDiv input{
+    border: transparent;
+    padding: 5px 20px;
+    margin-bottom: 1rem;
+}
+
+.inputDiv label{
+    color: white;
+    margin-bottom: 4px;
+}
+
+

@@ -1,0 +1,40 @@
+.mainContainer{
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid white;
+    padding: 0.5rem;
+}
+
+.userContainer{
+    display: flex;
+    align-items: center;
+}
+
+.username{
+    color: white;
+    margin: 0;
+    margin-left: 1rem;
+}
+
+.iconContainer{
+    display: flex;
+    align-items: start;
+}
+
+.profilePicture{
+    width: 50px;
+}
+
+.logoutButton{
+    width: 15px;
+    background-color: transparent;
+    border: transparent;
+}
+
+.logoutButton:hover{
+    cursor: pointer;
+}
+
+.svgLogoutIcon{
+    width: 15px;
+}
