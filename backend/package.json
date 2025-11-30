@@ -1,6 +1,8 @@
 {
   "type": "module",
   "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "typescript": "^5.9.3"
@@ -9,10 +11,12 @@
     "@types/express": "^5.0.5",
     "@types/node": "^24.10.1",
     "nodemon": "^3.1.11",
+    "prisma": "^6.19.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0"
   },
   "scripts": {
-    "dev": " npx tsx src/main.ts"
+    "dev": " npx tsx src/main.ts",
+    "models": "npx prisma generate --schema=src/DAL/prisma/schema.prisma"
   }
 }

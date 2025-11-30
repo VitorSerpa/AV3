@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model aeronave {
+  codigo       Int                    @id @default(autoincrement())
+  modelo       String                 @db.VarChar(200)
+  tipoAeronave aeronave_tipoAeronave?
+  capacidade   Int
+  alcance      Int
+  etapa        etapa[]
+  peca         peca[]
+  teste        teste[]
+}
+
+model etapa {
+  id_etapa          Int                 @id @default(autoincrement())
+  nome              String              @db.VarChar(100)
+  prazo             String              @db.VarChar(100)
+  status_etapa      etapa_status_etapa?
+  id_aeronave       Int?
+  aeronave          aeronave?           @relation(fields: [id_aeronave], references: [codigo], onDelete: NoAction, onUpdate: NoAction, map: "etapa_ibfk_1")
+  funcionario_etapa funcionario_etapa[]
+
+  @@index([id_aeronave], map: "id_aeronave")
+}
+
+model funcionario {
+  id_funcionario    Int                          @id @default(autoincrement())
+  nome              String                       @db.VarChar(100)
+  telefone          String                       @db.VarChar(100)
+  endereco          String                       @db.VarChar(100)
+  usuario           String                       @db.VarChar(100)
+  senha             String                       @db.VarChar(100)
+  nivel_permissao   funcionario_nivel_permissao?
+  funcionario_etapa funcionario_etapa[]
+}
+
+model funcionario_etapa {
+  id_funcionario Int
+  id_etapa       Int
+  funcionario    funcionario @relation(fields: [id_funcionario], references: [id_funcionario], onDelete: NoAction, onUpdate: NoAction, map: "funcionario_etapa_ibfk_1")
+  etapa          etapa       @relation(fields: [id_etapa], references: [id_etapa], onDelete: NoAction, onUpdate: NoAction, map: "funcionario_etapa_ibfk_2")
+
+  @@id([id_funcionario, id_etapa])
+  @@index([id_etapa], map: "id_etapa")
+}
+
+model peca {
+  id_peca     Int               @id @default(autoincrement())
+  nome        String            @db.VarChar(100)
+  tipo_peca   peca_tipo_peca
+  fornecedor  String            @db.VarChar(100)
+  status_peca peca_status_peca?
+  id_aeronave Int?
+  aeronave    aeronave?         @relation(fields: [id_aeronave], references: [codigo], onDelete: NoAction, onUpdate: NoAction, map: "peca_ibfk_1")
+
+  @@index([id_aeronave], map: "id_aeronave")
+}
+
+model teste {
+  id_teste    Int              @id @default(autoincrement())
+  tipoTeste   teste_tipoTeste?
+  resultado   teste_resultado?
+  id_aeronave Int?
+  aeronave    aeronave?        @relation(fields: [id_aeronave], references: [codigo], onDelete: NoAction, onUpdate: NoAction, map: "teste_ibfk_1")
+
+  @@index([id_aeronave], map: "id_aeronave")
+}
+
+enum teste_tipoTeste {
+  eletrico
+  hidraulico
+  aerodinamico
+}
+
+enum aeronave_tipoAeronave {
+  comercial
+  militar
+}
+
+enum peca_tipo_peca {
+  nacional
+  importada
+}
+
+enum teste_resultado {
+  aprovado
+  reprovado
+}
+
+enum etapa_status_etapa {
+  pendente
+  andamento
+  concluida
+}
+
+enum peca_status_peca {
+  em_producao
+  em_transporte
+  pronta
+}
+
+enum funcionario_nivel_permissao {
+  admin
+  engenheiro
+  operador
+}

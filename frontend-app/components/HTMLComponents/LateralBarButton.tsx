@@ -1,8 +1,26 @@
 import React from "react";
-import style from "./LateralBarButton.module.css"
+import style from "./LateralBarButton.module.css";
 
-export default function LateralBarButton({title, link}:{title: string, link: string}){
-    return(
-        <a className={style.a} href={link}><button className={style.button}>{title}</button></a>
-    )
+interface LateralBarButtonProps {
+  title: string;
+  link?: string;       // opcional
+  onClick?: () => void; // opcional
+}
+
+export default function LateralBarButton({ title, link, onClick }: LateralBarButtonProps) {
+  if (link) {
+    return (
+      <a className={style.a} href={link}>
+        <button className={style.button} onClick={onClick}>
+          {title}
+        </button>
+      </a>
+    );
+  }
+
+  return (
+    <button className={style.button} onClick={onClick}>
+      {title}
+    </button>
+  );
 }

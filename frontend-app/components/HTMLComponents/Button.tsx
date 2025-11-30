@@ -1,8 +1,26 @@
 import React from "react";
 import style from "./Button.module.css"
 
-export default function Button({title, link}:{title: string, link: string}){
-    return(
-        <a className={style.a} href={link}><button className={style.button}>{title}</button></a>
-    )
+interface ButtonProps {
+  title: string;
+  link?: string;
+  onClick?: () => void;
+}
+
+export default function Button({ title, link, onClick }: ButtonProps) {
+  if (link) {
+    return (
+      <a className={style.a} href={link}>
+        <button className={style.button} onClick={onClick}>
+          {title}
+        </button>
+      </a>
+    );
+  }
+
+  return (
+    <button className={style.button} onClick={onClick}>
+      {title}
+    </button>
+  );
 }

@@ -46,6 +46,7 @@
     border: 1px solid white;
     padding: 2rem;
     min-width: 40%;
+      background: rgba(23, 23, 23, 0.7); 
 }
 
 
@@ -73,3 +74,108 @@
     flex-direction: column;
     align-items: center;
 }
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(23, 23, 23, 0.7); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.modalContent {
+  background: #2a2a2a; 
+  color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  
+  max-width: 90%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  animation: slideDown 0.2s ease-in-out;
+}
+
+.modalContent h2 {
+    color: #EF233C;
+    margin-bottom: 1rem;
+}
+
+.modalContent label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.modalContent input,
+.modalContent select {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border-color 0.2s;
+  background-color: #1d1d1d;
+  color: white;
+}
+
+.modalContent input:focus,
+.modalContent select:focus {
+  border-color: #EF233C;
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.modalButtons button {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.modalButtons button:first-child {
+  background-color: #EF233C;
+  color: white;
+}
+
+.modalButtons button:first-child:hover {
+  background-color: #b71c2c;
+}
+
+.modalButtons button:last-child {
+  background-color: #555555;
+  color: white;
+}
+
+.modalButtons button:last-child:hover {
+  background-color: #777777;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modalContent.warning {
+    border: 2px solid #EF233C; 
+}
+

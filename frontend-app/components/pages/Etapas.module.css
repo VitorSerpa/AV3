@@ -91,3 +91,126 @@
     border-radius: 5px;
     padding: 5px;
 }
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 15, 15, 0.75);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.modalContent {
+  background: #1f1f1f;
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 420px;
+  max-width: 90%;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.15);
+  animation: scaleIn 0.2s ease-out;
+}
+
+.modalContent h2 {
+  color: #EF233C;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.modalContent label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.modalContent input,
+.modalContent select {
+  width: 100%;
+  padding: 0.6rem;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.2s ease-out;
+}
+
+.modalContent input:focus,
+.modalContent select:focus {
+  border-color: #EF233C;
+  box-shadow: 0 0 6px rgba(239, 35, 60, 0.3);
+}
+
+.modalButtons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.modalButtons button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s ease-in-out;
+  font-size: 0.95rem;
+}
+
+.modalButtons button:first-child {
+  background-color: #EF233C;
+  color: white;
+}
+
+.modalButtons button:first-child:hover {
+  background-color: #c71f32;
+  box-shadow: 0 0 8px rgba(239, 35, 60, 0.4);
+}
+
+.modalButtons button:last-child {
+  background-color: #444;
+  color: white;
+}
+
+.modalButtons button:last-child:hover {
+  background-color: #666;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modalContent.warning {
+  border: 2px solid #EF233C;
+  animation: pulseWarning 0.4s ease-out;
+}
+
+@keyframes pulseWarning {
+  0% { box-shadow: 0 0 0px rgba(239, 35, 60, 0); }
+  100% { box-shadow: 0 0 15px rgba(239, 35, 60, 0.5); }
+}
