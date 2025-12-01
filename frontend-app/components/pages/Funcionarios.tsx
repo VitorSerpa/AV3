@@ -6,15 +6,25 @@ import Button from "../HTMLComponents/Button";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+interface Funcionario {
+    id_funcionario: number;
+    nome: string;
+    telefone: string;
+    endereco: string;
+    usuario: string;
+    senha: string;
+    nivel_permissao: "adminsitrador" | "engenheiro" | "operador";
+}
+
 export default function Funcionarios({ role }: { role: string }) {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     const [error, setError] = useState<string | null>(null);
-    const [funcionarios, setFuncionarios] = useState<Funcionarios[]>([])
+    const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [warningMessage, setWarningMessage] = useState("");
-    const [isModalWarningOpen, setisModalWarningOpen] = useState(false);
+    const [isModalWarningOpen, setIsModalWarningOpen] = useState(false);
 
     const [newFuncionario, setNewFuncionario] = useState({
         nome: "",
@@ -25,49 +35,43 @@ export default function Funcionarios({ role }: { role: string }) {
         nivel_permissao: "operador" as "adminsitrador" | "engenheiro" | "operador",
     });
 
-    interface Funcionarios {
-        id_funcionario: number;
-        nome: string;
-        telefone: string;
-        endereco: string;
-        usuario: string;
-        senha: string;
-        nivel_permissao: "adminsitrador" | "engenheiro" | "operador";
-    }
-
     useEffect(() => {
-        if (role === "admin") {
-            axios.get(apiUrl + "/funcionario")
-                .then((response) => {
-                    setFuncionarios(response.data)
-                    setLoading(false);
-                })
-                .catch((err) => {
-                    setError("Erro ao carregar funcionários");
-                    console.error(err);
-                    setLoading(false);
-                });
-        }
-    }, []);
+        axios.get<Funcionario[]>(apiUrl + "/funcionario", {
+            headers: { "x-request-start": Date.now().toString() }
+        })
+        .then((response) => {
+            setFuncionarios(response.data);
+            setLoading(false);
+        })
+        .catch((err) => {
+            setError("Erro ao carregar funcionários");
+            console.error(err);
+            setLoading(false);
+        });
+    }, [apiUrl]);
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
     const handleCriarFuncionario = async () => {
         try {
-            const response = await axios.post(apiUrl + "/funcionario", newFuncionario);
+            const response = await axios.post(apiUrl + "/funcionario", newFuncionario, {
+                headers: { "x-request-start": Date.now().toString() }
+            });
             setFuncionarios([...funcionarios, response.data]);
             closeModal();
         } catch (err) {
             console.error("Erro ao criar funcionário:", err);
             setWarningMessage("Erro ao criar funcionário. Verifique os dados e tente novamente.");
-            setisModalWarningOpen(true);
+            setIsModalWarningOpen(true);
         }
     };
 
-    const handleGetEtapas = async (funcionario: Funcionarios) => {
+    const handleGetEtapas = async (funcionario: Funcionario) => {
         try {
-            const { data } = await axios.get(apiUrl + "/funcionario/" + funcionario.id_funcionario);
+            const { data } = await axios.get(apiUrl + "/funcionario/" + funcionario.id_funcionario, {
+                headers: { "x-request-start": Date.now().toString() }
+            });
 
             if (data.length === 0) {
                 setWarningMessage("Nenhuma etapa atribuída a este funcionário.");
@@ -81,15 +85,16 @@ export default function Funcionarios({ role }: { role: string }) {
                 setWarningMessage(msg);
             }
 
-            setisModalWarningOpen(true);
+            setIsModalWarningOpen(true);
             closeModal();
 
         } catch (err) {
             setWarningMessage("Erro ao buscar etapas.");
-            setisModalWarningOpen(true);
+            setIsModalWarningOpen(true);
         }
     };
-    const renderUsers = (role: string, funcionario: any) => {
+
+    const renderUsers = (role: string, funcionario: Funcionario) => {
         if (role === "admin") {
             return (
                 <>
@@ -99,14 +104,14 @@ export default function Funcionarios({ role }: { role: string }) {
                     <label className={style.label}>Password</label>
                     <input type="password" value={funcionario.senha} readOnly />
                 </>
-            )
+            );
         }
     }
 
-    const renderOptions = (role: string, funcionario: Funcionarios) => {
+    const renderOptions = (role: string, funcionario: Funcionario) => {
         if (role === "admin" || role === "engenheiro") {
             return (
-                <LateralBarButton title="Etapas Associada" onClick={() => handleGetEtapas(funcionario)}></LateralBarButton>
+                <LateralBarButton title="Etapas Associada" onClick={() => handleGetEtapas(funcionario)} />
             );
         }
     };
@@ -114,7 +119,7 @@ export default function Funcionarios({ role }: { role: string }) {
     const renderButton = (role: string) => {
         if (role === "admin") {
             return (
-                <Button title="Criar Funcionario" link="" onClick={openModal}></Button>
+                <Button title="Criar Funcionario" link="" onClick={openModal} />
             );
         }
     };
@@ -126,6 +131,7 @@ export default function Funcionarios({ role }: { role: string }) {
                 <div className={style.titleButton}>{renderButton(role)}</div>
             </div>
             <div className={style.sectionContainer}>
+                {loading && <p>Carregando funcionários...</p>}
                 {funcionarios.map((funcionario) => (
                     <div className={style.aeronaveContainer} key={funcionario.id_funcionario}>
                         <div className={style.description}>
@@ -224,7 +230,7 @@ export default function Funcionarios({ role }: { role: string }) {
                             <p>{warningMessage}</p>
                             <div className={style.modalButtons}>
                                 <button
-                                    onClick={() => setisModalWarningOpen(false)}
+                                    onClick={() => setIsModalWarningOpen(false)}
                                     style={{ backgroundColor: "#e0e0e0", color: "#333" }}
                                 >
                                     Fechar

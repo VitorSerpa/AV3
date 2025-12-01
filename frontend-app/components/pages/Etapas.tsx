@@ -6,28 +6,28 @@ import Button from "../HTMLComponents/Button";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+interface Etapa {
+    id_etapa: number;
+    nome: string;
+    prazo: string;
+    status_etapa: "pendente" | "andamento" | "concluida";
+}
+
+interface Funcionario {
+    id_funcionario: number;
+    nome: string;
+    nivel_permissao: string;
+}
+
 export default function Etapas({ role }: { role: string }) {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    interface Etapa {
-        id_etapa: number;
-        nome: string;
-        prazo: string;
-        status_etapa: "pendente" | "andamento" | "concluida";
-    }
-
-    interface Funcionario {
-        id_funcionario: number;
-        nome: string;
-        nivel_permissao: string;
-    }
-
     const [etapas, setEtapas] = useState<Etapa[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
+
     const [funcionarios, setFuncionarios] = useState<Funcionario[]>([]);
     const [etapaSelecionada, setEtapaSelecionada] = useState<Etapa | null>(null);
     const [funcionarioSelecionado, setFuncionarioSelecionado] = useState<number | null>(null);
@@ -35,29 +35,33 @@ export default function Etapas({ role }: { role: string }) {
     const [novaEtapa, setNovaEtapa] = useState({
         nome: "",
         prazo: "",
-        status_etapa: "pendente",
+        status_etapa: "pendente" as "pendente" | "andamento" | "concluida",
     });
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
     useEffect(() => {
-        if (role === "admin") {
-            axios.get(`${apiUrl}/etapa`)
-                .then((response) => {
-                    setEtapas(response.data);
-                    setLoading(false);
-                })
-                .catch(() => setLoading(false));
-        }
-    }, []);
-
+        axios.get<Etapa[]>(`${apiUrl}/etapa`, {
+            headers: { "x-request-start": Date.now().toString() }
+        })
+        .then((response) => {
+            setEtapas(response.data);
+            setLoading(false);
+        })
+        .catch((err) => {
+            console.error("Erro ao carregar etapas:", err);
+            setLoading(false);
+        });
+    }, [apiUrl]);
 
     const handleAtribuirFuncionario = async (etapa: Etapa) => {
         setEtapaSelecionada(etapa);
 
         try {
-            const response = await axios.get(`${apiUrl}/funcionario`);
+            const response = await axios.get<Funcionario[]>(`${apiUrl}/funcionario`, {
+                headers: { "x-request-start": Date.now().toString() }
+            });
             setFuncionarios(response.data);
             setIsAssignModalOpen(true);
         } catch (error) {
@@ -72,6 +76,8 @@ export default function Etapas({ role }: { role: string }) {
             await axios.post(`${apiUrl}/etapa/etapaFuncionario`, {
                 id_funcionario: funcionarioSelecionado,
                 id_etapa: etapaSelecionada.id_etapa
+            }, {
+                headers: { "x-request-start": Date.now().toString() }
             });
 
             alert("Funcionário atribuído com sucesso!");
@@ -81,25 +87,23 @@ export default function Etapas({ role }: { role: string }) {
         }
     };
 
-    const handleCriarEtapa = () => {
-        axios.post(`${apiUrl}/etapa`, novaEtapa)
-            .then((response) => {
-                setEtapas([...etapas, response.data]);
-                setNovaEtapa({ nome: "", prazo: "", status_etapa: "pendente" });
-                closeModal();
+    const handleCriarEtapa = async () => {
+        try {
+            const response = await axios.post(`${apiUrl}/etapa`, novaEtapa, {
+                headers: { "x-request-start": Date.now().toString() }
             });
+            setEtapas([...etapas, response.data]);
+            setNovaEtapa({ nome: "", prazo: "", status_etapa: "pendente" });
+            closeModal();
+        } catch (err) {
+            console.error("Erro ao criar etapa:", err);
+        }
     };
 
-    const renderStatus = (statusPeca: string) => {
-        if (statusPeca === "concluida") {
-            return <p className={style.statusVerde}>Status: CONCLUIDA</p>;
-        }
-        if (statusPeca === "pendente") {
-            return <p className={style.statusVermelho}>Status: PENDENTE</p>;
-        }
-        if (statusPeca === "andamento") {
-            return <p className={style.statusAzul}>Status: EM ANDAMENTO</p>;
-        }
+    const renderStatus = (status: string) => {
+        if (status === "concluida") return <p className={style.statusVerde}>Status: CONCLUIDA</p>;
+        if (status === "pendente") return <p className={style.statusVermelho}>Status: PENDENTE</p>;
+        if (status === "andamento") return <p className={style.statusAzul}>Status: EM ANDAMENTO</p>;
     };
 
     const renderOptions = (role: string, etapa: Etapa) => {
@@ -114,10 +118,7 @@ export default function Etapas({ role }: { role: string }) {
         if (role === "admin") {
             return (
                 <>
-                    <LateralBarButton
-                        title="Atribuir Funcionarios"
-                        onClick={() => handleAtribuirFuncionario(etapa)}
-                    />
+                    <LateralBarButton title="Atribuir Funcionarios" onClick={() => handleAtribuirFuncionario(etapa)} />
                     <LateralBarButton title="Atualizar Status" link="" />
                     <LateralBarButton title="Aeronave Associada" link="" />
                 </>
@@ -143,6 +144,8 @@ export default function Etapas({ role }: { role: string }) {
             </div>
 
             <div className={style.sectionContainer}>
+                {loading && <p>Carregando etapas...</p>}
+
                 {etapas.map((etapa) => (
                     <div className={style.aeronaveContainer} key={etapa.id_etapa}>
                         <div className={style.description}>
@@ -206,7 +209,6 @@ export default function Etapas({ role }: { role: string }) {
                                 onChange={(e) => setFuncionarioSelecionado(Number(e.target.value))}
                             >
                                 <option value="">Selecione...</option>
-
                                 {funcionarios.map((f) => (
                                     <option key={f.id_funcionario} value={f.id_funcionario}>
                                         {f.nome} ({f.nivel_permissao})

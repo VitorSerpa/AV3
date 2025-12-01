@@ -18,11 +18,11 @@ interface LateralBarProps {
 export default function LateralBar({ itensPermitidos, role, usuario }: LateralBarProps) {
 
   const botoes = [
-    { title: "Aeronaves", link: "/" + role + "/aeronaves" },
-    { title: "Aeronaves Atribuidas", link: "/" + role + "/aeronaves" },
-    { title: "Funcionarios", link: "/" + role + "/funcionarios" },
-    { title: "Peças", link: "/" + role + "/pecas" },
-    { title: "Etapas", link: "/" + role + "/etapas" },
+    { title: "Aeronaves", link: "/" + "admin" + "/aeronaves" },
+    { title: "Aeronaves Atribuidas", link: "/" + "admin" + "/aeronaves" },
+    { title: "Funcionarios", link: "/" + "admin" + "/funcionarios" },
+    { title: "Peças", link: "/" + "admin" + "/pecas" },
+    { title: "Etapas", link: "/" + "admin" + "/etapas" },
   ]
 
   const botoesVisiveis = botoes.filter((botao) =>

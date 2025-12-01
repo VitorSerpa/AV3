@@ -19,6 +19,26 @@ export const etapaRepository = {
     }
   },
 
+
+  async atribuirEtapaAeronave(idEtapa: number, idAeronave: number) {
+    try {
+      return await prisma.etapa.update({
+        where: { id_etapa: idEtapa },
+        data: {
+          aeronave: {
+            connect: { codigo: idAeronave }, 
+          },
+        },
+      });
+    } catch (err) {
+      console.error(
+        `Erro ao atribuir etapa ${idEtapa} à aeronave ${idAeronave}:`,
+        err
+      );
+      throw new Error("Erro ao atribuir etapa à aeronave");
+    }
+  },
+  
   async create(data: any) {
     try {
       return await prisma.etapa.create({ data });

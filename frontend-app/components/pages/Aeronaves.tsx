@@ -18,6 +18,11 @@ export default function Aeronaves({ role }: { role: string }) {
         alcance: number;
     }
 
+    interface Peca {
+        id_peca: number;
+        nome: string;
+    }
+
     const [aeronaves, setAeronaves] = useState<Aeronave[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -30,11 +35,18 @@ export default function Aeronaves({ role }: { role: string }) {
         alcance: ""
     });
 
+    const [isAtribuirModalOpen, setIsAtribuirModalOpen] = useState(false);
+    const [pecasDisponiveis, setPecasDisponiveis] = useState<Peca[]>([]);
+    const [selectedAeronave, setSelectedAeronave] = useState<number | null>(null);
+    const [selectedPeca, setSelectedPeca] = useState<string>("");
+
     const openCreateModal = () => setIsCreateModalOpen(true);
     const closeCreateModal = () => setIsCreateModalOpen(false);
 
     useEffect(() => {
-        axios.get(apiUrl + "/aeronave")
+        axios.get(apiUrl + "/aeronave", {
+            headers: { "x-request-start": Date.now().toString() }
+        })
             .then((response) => {
                 setAeronaves(response.data);
                 setLoading(false);
@@ -51,29 +63,77 @@ export default function Aeronaves({ role }: { role: string }) {
             tipoAeronave: novaAeronave.tipoAeronave,
             capacidade: Number(novaAeronave.capacidade),
             alcance: Number(novaAeronave.alcance)
+        }, {
+            headers: { "x-request-start": Date.now().toString() }
         })
-        .then((response) => {
-            setAeronaves([...aeronaves, response.data]); 
-            setNovaAeronave({
-                modelo: "",
-                tipoAeronave: "comercial",
-                capacidade: "",
-                alcance: ""
+            .then((response) => {
+                setAeronaves([...aeronaves, response.data]);
+                setNovaAeronave({
+                    modelo: "",
+                    tipoAeronave: "comercial",
+                    capacidade: "",
+                    alcance: ""
+                });
+                closeCreateModal();
+            })
+            .catch((err) => {
+                console.error("Erro ao criar aeronave:", err);
             });
-            closeCreateModal();
-        })
-        .catch((err) => {
-            console.error("Erro ao criar aeronave:", err);
-        });
     };
 
-    const renderOptions = (role: string) => {
+    const openAtribuirPecaModal = (codigo: number) => {
+        setSelectedAeronave(codigo);
+        setIsAtribuirModalOpen(true);
+
+        axios.get(apiUrl + "/peca", {
+            headers: { "x-request-start": Date.now().toString() }
+        })
+            .then(res => {
+                setPecasDisponiveis(res.data)
+                console.log(res.data)
+            })
+
+            .catch(err => console.error("Erro ao carregar peças:", err));
+    };
+
+    const closeAtribuirPecaModal = () => {
+        setSelectedAeronave(null);
+        setSelectedPeca("");
+        setIsAtribuirModalOpen(false);
+    };
+
+    const handleConfirmarAtribuicao = () => {
+        if (!selectedAeronave || !selectedPeca) return;
+
+        axios.put(`${apiUrl}/peca/${selectedPeca}`, {
+            id_aeronave: selectedAeronave
+        }, {
+            headers: { "x-request-start": Date.now().toString() }
+        })
+            .then(() => {
+                alert("Peça atribuída com sucesso!");
+                closeAtribuirPecaModal();
+
+                setPecasDisponiveis(prev => prev.filter(p => p.id_peca !== Number(selectedPeca)));
+            })
+            .catch(err => {
+                console.error("Erro ao atribuir peça:", err);
+                alert("Erro ao atribuir peça.");
+            });
+
+    };
+
+
+    const renderOptions = (role: string, aeronave: Aeronave) => {
         if (role === "admin" || role === "engenheiro") {
             return (
                 <div className={style.options}>
                     <LateralBarButton title="Gerar Relatório" link="" />
                     <LateralBarButton title="Realizar Testes" link="" />
-                    <LateralBarButton title="Atribuir peça" onClick={handleAtribuirPeca} />
+                    <LateralBarButton
+                        title="Atribuir peça"
+                        onClick={() => openAtribuirPecaModal(aeronave.codigo)}
+                    />
                 </div>
             );
         }
@@ -87,11 +147,9 @@ export default function Aeronaves({ role }: { role: string }) {
         }
     };
 
-    const handleAtribuirPeca = () => {
-    };
-
     return (
         <div className={style.mainContainer}>
+
             <div className={style.titleDiv}>
                 <h1 className={style.title}>Aeronaves</h1>
                 <div className={style.titleButton}>{renderButton(role)}</div>
@@ -111,7 +169,7 @@ export default function Aeronaves({ role }: { role: string }) {
                             <p>Alcance: {aeronave.alcance} km</p>
                         </div>
 
-                        {renderOptions(role)}
+                        {renderOptions(role, aeronave)}
                     </div>
                 ))}
             </div>
@@ -174,6 +232,36 @@ export default function Aeronaves({ role }: { role: string }) {
                     </div>
                 </div>
             )}
+
+            {isAtribuirModalOpen && (
+                <div className={style.modalOverlay}>
+                    <div className={style.modalContent}>
+                        <h2>Atribuir peça à aeronave</h2>
+
+                        <label>Peça:
+                            <select
+                                value={selectedPeca}
+                                onChange={(e) => setSelectedPeca(e.target.value)}
+                            >
+                                <option key="placeholder" value="">Selecione uma peça</option>
+                                {pecasDisponiveis.map((peca) => (
+                                    <option key={`peca-${peca.id_peca}`} value={String(peca.id_peca)}>
+                                        {peca.nome}
+                                    </option>
+                                ))}
+                            </select>
+
+
+                        </label>
+
+                        <div className={style.modalButtons}>
+                            <button onClick={handleConfirmarAtribuicao}>Atribuir</button>
+                            <button onClick={closeAtribuirPecaModal}>Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }

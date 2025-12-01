@@ -22,11 +22,11 @@ export default function LoginPage() {
             });
 
             const user = response.data.user;
-            console.log(user)   
+            console.log(user)
             console.log("user from API:", user);
-localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("user", JSON.stringify(user));
 
-            router.push("/" + user.nivel_permissao);
+            router.push("/admin");
 
         } catch (err: any) {
             setErrorMsg("Usuário ou senha incorretos.");
@@ -43,7 +43,7 @@ localStorage.setItem("user", JSON.stringify(user));
                 <div className={style.loginDiv}>
                     <h4>Login</h4>
                     <div className={style.inputDiv}>
-                        
+
                         <label>Username</label>
                         <input
                             type="text"

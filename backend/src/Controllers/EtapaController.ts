@@ -37,3 +37,19 @@ export async function createEtapaFuncionario(req: Request, res: Response) {
         res.status(500).json({ error: "Erro ao criar etapa" });
     }
 }
+
+export async function atribuirEtapaAeronave(req: Request, res: Response) {
+  const { idEtapa, idAeronave } = req.body;
+
+  if (!idEtapa || !idAeronave) {
+    return res.status(400).json({ message: "idEtapa e idAeronave são obrigatórios" });
+  }
+
+  try {
+    const etapa = await etapaRepository.atribuirEtapaAeronave(Number(idEtapa), Number(idAeronave));
+    res.json({ message: "Etapa atribuída à aeronave com sucesso", etapa });
+  } catch (err) {
+    console.error(`Erro ao atribuir etapa ${idEtapa} à aeronave ${idAeronave}:`, err);
+    res.status(500).json({ error: "Erro ao atribuir etapa à aeronave" });
+  }
+}

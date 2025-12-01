@@ -1,0 +1,126 @@
+
+Data/Hora: 2025-12-01T01:41:10.489Z
+Rota: GET /funcionario
+Status: 304
+
+Latência: 247 ms
+Tempo de processamento no servidor: 154.18 ms
+Tempo total da requisição: 401.18 ms
+
+
+Data/Hora: 2025-12-01T01:41:10.504Z
+Rota: GET /funcionario
+Status: 304
+
+Latência: 260 ms
+Tempo de processamento no servidor: 13.86 ms
+Tempo total da requisição: 273.86 ms
+
+
+Data/Hora: 2025-12-01T01:41:17.085Z
+Rota: GET /peca
+Status: 304
+
+Latência: 90 ms
+Tempo de processamento no servidor: 19.26 ms
+Tempo total da requisição: 109.26 ms
+
+
+Data/Hora: 2025-12-01T01:41:17.099Z
+Rota: GET /peca
+Status: 304
+
+Latência: 102 ms
+Tempo de processamento no servidor: 12.19 ms
+Tempo total da requisição: 114.19 ms
+
+
+Data/Hora: 2025-12-01T01:42:19.625Z
+Rota: GET /aeronave
+Status: 304
+
+Latência: 152 ms
+Tempo de processamento no servidor: 100.32 ms
+Tempo total da requisição: 252.32 ms
+
+
+Data/Hora: 2025-12-01T01:42:19.646Z
+Rota: GET /aeronave
+Status: 304
+
+Latência: 175 ms
+Tempo de processamento no servidor: 20.07 ms
+Tempo total da requisição: 195.07 ms
+
+
+Data/Hora: 2025-12-01T01:42:26.046Z
+Rota: GET /funcionario
+Status: 304
+
+Latência: 100 ms
+Tempo de processamento no servidor: 34.84 ms
+Tempo total da requisição: 134.84 ms
+
+
+Data/Hora: 2025-12-01T01:42:26.062Z
+Rota: GET /funcionario
+Status: 304
+
+Latência: 114 ms
+Tempo de processamento no servidor: 13.31 ms
+Tempo total da requisição: 127.31 ms
+
+
+Data/Hora: 2025-12-01T01:55:16.203Z
+Rota: GET /funcionario/3
+Status: 404
+
+Latência: 182 ms
+Tempo de processamento no servidor: 174.46 ms
+Tempo total da requisição: 356.46 ms
+
+
+Data/Hora: 2025-12-01T01:55:19.254Z
+Rota: GET /etapa
+Status: 304
+
+Latência: 60 ms
+Tempo de processamento no servidor: 24.33 ms
+Tempo total da requisição: 84.33 ms
+
+
+Data/Hora: 2025-12-01T01:55:19.268Z
+Rota: GET /etapa
+Status: 304
+
+Latência: 69 ms
+Tempo de processamento no servidor: 12.71 ms
+Tempo total da requisição: 81.71 ms
+
+
+Data/Hora: 2025-12-01T01:55:20.068Z
+Rota: GET /funcionario
+Status: 304
+
+Latência: 17 ms
+Tempo de processamento no servidor: 11.04 ms
+Tempo total da requisição: 28.04 ms
+
+
+Data/Hora: 2025-12-01T01:55:27.423Z
+Rota: GET /peca
+Status: 304
+
+Latência: 97 ms
+Tempo de processamento no servidor: 21.06 ms
+Tempo total da requisição: 118.06 ms
+
+
+Data/Hora: 2025-12-01T01:55:27.436Z
+Rota: GET /peca
+Status: 304
+
+Latência: 108 ms
+Tempo de processamento no servidor: 11.40 ms
+Tempo total da requisição: 119.40 ms
+
