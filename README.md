@@ -1,9 +1,5 @@
 # ✈️ Aerocode - Sistema de Gerenciamento de Aeronaves
 
-Este projeto é um sistema de gerenciamento de etapas na construção de aeronaves, desenvolvido para otimizar o acompanhamento e controle dos processos.
-
-A interface gráfica (GUI) foi desenvolvida utilizando React com o framework Next.js, proporcionando uma navegação fluida, rápida e responsiva.
-
 - [📄 Clique aqui para baixar o relatório em PDF](https://github.com/VitorSerpa/AV3/blob/main/Relatorio.pdf)
 
 
